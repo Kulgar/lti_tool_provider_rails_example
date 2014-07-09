@@ -1,0 +1,2 @@
+#! /bin/bash
+rvmsudo bundle exec thin start -p 443 --ssl --ssl-key-file /etc/ssl/private/ssl-cert-snakeoil.key --ssl-cert-file /etc/ssl/certs/ssl-cert-snakeoil.pem

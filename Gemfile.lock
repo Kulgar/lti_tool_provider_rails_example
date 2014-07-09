@@ -159,6 +159,7 @@ DEPENDENCIES
   ims-lti
   jbuilder (~> 1.2)
   jquery-rails
+  oauth
   oauth-plugin
   rails (~> 4.1.4)
   sass-rails (~> 4.0.0)

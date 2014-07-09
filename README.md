@@ -5,7 +5,7 @@ A basic Rails app to build your LTI apps
 
 Work in progress...
 
-== LTI Parameters
+## LTI Parameters
 
 Parameters that should always be here:
  

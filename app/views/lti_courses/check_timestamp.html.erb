@@ -1,0 +1,5 @@
+<% if @valid %>
+	Valid date
+<% else %>
+	Timestamp <%= params[:oauth_timestamp].blank? ? "can't be blank" : "is too old" %>
+<% end %>

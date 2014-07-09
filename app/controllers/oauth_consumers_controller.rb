@@ -6,8 +6,6 @@ class OauthConsumersController < ApplicationController
   #
   #   before_filter :authenticate_user!, :only=>:index
   before_filter :authenticate_user!, :only=>:index
-  skip_before_filter :load_consumer, :only => :lti_course
-  before_filter :check_nonce, :only => :lti_course
 
   def index
     @consumer_tokens=ConsumerToken.all :conditions=>{:user_id=>current_user.id}
@@ -22,20 +20,7 @@ class OauthConsumersController < ApplicationController
     super
   end
 
-  # Used to follow online course: https://canvas.instructure.com/courses/785215
-  def lti_course
-    
-  end
-
   protected
-  
-    def check_nonce
-      oauth_nonce = OauthNonce.create_or_update(params[:oauth_nonce].to_s)
-      if oauth_nonce.nil?
-        raise "Something went wrong with oauth_nonce"
-      end
-    end
-
     # Change this to decide where you want to redirect user to after callback is finished.
     # params[:id] holds the service name so you could use this to redirect to various parts
     # of your application depending on what service you're connecting to.

@@ -36,6 +36,7 @@ group :doc do
 end
 
 # OAuth & LTI
+gem 'oauth'
 gem 'oauth-plugin'
 gem 'ims-lti'
 

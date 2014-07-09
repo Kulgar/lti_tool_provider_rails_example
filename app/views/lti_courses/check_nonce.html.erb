@@ -1,0 +1,7 @@
+<% if @oauth_nonce.errors.any? %>
+	OAuth nonce was not valid:
+	<%= @oauth_nonce.errors.full_messages %>
+<% else %>
+	OAuth nonce was valid and is saved in OAuthNonce: 
+	<%= @oauth_nonce.inspect %>
+<% end %>

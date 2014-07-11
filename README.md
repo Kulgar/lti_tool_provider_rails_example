@@ -14,7 +14,6 @@ The following parameters should always be sent back to you, here is a list of th
 *  __LTI message type__, should always equal (for now): _basic-lti-launch-request_
 *  __LTI Version__, for now, should be: _lti_version: LTI-1.0_
 *  __Resource link id:__ uniq for each spot where the app is used in a course/plateform. _Example: resource_link_id: a2b86a2534_
-*  __Context Id:__ uniq id for the course/group/other setting. _Example: context_id: a8973674c7_
 *  __User Id:__ uniq id for the user across a platform. _Example: user_id: fb7e22d87d_
 *  __Roles:__ Store the roles of users in specific short or long formats: http://www.imsglobal.org/lti/blti/bltiv1p0/ltiBLTIimgv1p0.html#_Toc261271984 
 *  __OAuth Consumer Key:__ uniq key that should be sent back to the app along with a shared secret. Example: _oauth_consumer_key: 2f8f0761267181a085502a6b62256de1_
@@ -25,11 +24,11 @@ The following parameters should always be sent back to you, here is a list of th
 *  __OAuth Signature:__ generated based on all others parameters. It should be checked for security reasons. Example: _oauth_signature: kXplraBcOlciwjohNsKzkZFr9Js=_
 *  __lis_person_name_full, lis_person_contact_email_primary, lis_person_name_given, and lis_person_name_family:__ 
     Parameters to identify user, the parameters should contain one of those
-*  __Custom Params:__ custom parameters that may be sent to give more information (or used at app config time to send them in each request)
-    _Example: custom_bacon: '4010591865'_
 *  __Outcome Service Url:__ tells us if we can post grades to the gradebook or not. If it's there, we can, if not, we can't. 
     _Example: lis_outcome_service_url: https://learn-lti.herokuapp.com/grade_passback/2757_
-    
+*  __Context Id:__ (optional) uniq id for the course/group setting. _Example: context_id: a8973674c7_
+*  __Custom Params:__ custom parameters that may be sent to give more information (or used at app config time to send them in each request). Those are optional parameters.
+    _Example: custom_bacon: '4010591865'_    
 
 ## LTI Course
 

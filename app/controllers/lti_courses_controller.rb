@@ -1,6 +1,4 @@
 # Used to follow online course: https://canvas.instructure.com/courses/785215
-require 'net/http'
-require 'net/https'
 class LtiCoursesController < ApplicationController
   
   # Given during the course exercices
@@ -122,23 +120,31 @@ class LtiCoursesController < ApplicationController
   end
   
   #== LTI Activity 6
-  #=== Section 2
+  #=== Section 2 to 6
   #- We are using a library here to ease the grading functionnality
   def send_grade
     consumer_key = params[:oauth_consumer_key].to_s
     consumer_secret = OAUTH_CONSUMER_SECRET
     @provider = IMS::LTI::ToolProvider.new(consumer_key, consumer_secret, params)
+    @provider.extend IMS::LTI::Extensions::OutcomeData::ToolProvider
     @cant_grade = false
+    grade = 0.9
     if @provider.valid_request?(request)
-      grade = case params[:section]
+      case params[:section]
       when "3"
-        1.0
+        grade = 1.0
       when "4"
-        0.43
-      else
-        0.9
+        grade = 0.43
+      when "5"
+        data = {"text" => "The law will judge you!"}
+      when "6"
+        data = {"url" => "http://www.example.com/horcruxes/8"}
       end
-      @response = @provider.post_replace_result!(grade)
+      if data
+        @response = @provider.post_replace_result_with_data!(grade, data)
+      else
+        @response = @provider.post_replace_result!(grade)
+      end
     else
       @cant_grade = true
     end

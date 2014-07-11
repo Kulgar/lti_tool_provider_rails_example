@@ -1,21 +1,25 @@
-LtiToolConsumerRailsExample::Application.routes.draw do
+LtiToolProviderRailsExample::Application.routes.draw do
   
   root 'lti_courses#home'
   
   devise_for :users
   
   #== Routes used for LTI Course activities
-  post '/' => "lti_courses#home" # Route for activity 1
-  post '/check_nonce' => "lti_courses#check_nonce" # Route for activity 2, section 1
-  post '/check_timestamp' => "lti_courses#check_timestamp" # Route for activity 2, section 2
-  post '/check_signature' => "lti_courses#check_signature" # Route for activity 2, sections 3 & 4
-  post '/redirect_users'  => "lti_courses#redirect_users"  # Route for activity 3, sections 1 to 5
+  post '/course' => "lti_courses#home" # Route for activity 1
+  post '/course/check_nonce' => "lti_courses#check_nonce" # Route for activity 2, section 1
+  post '/course/check_timestamp' => "lti_courses#check_timestamp" # Route for activity 2, section 2
+  post '/course/check_signature' => "lti_courses#check_signature" # Route for activity 2, sections 3 & 4
+  post '/course/redirect_users'  => "lti_courses#redirect_users"  # Route for activity 3, sections 1 to 5
   
   # Route for activity 4, sections 1 to 8
-  get '/config_xml' => "lti_courses#config_xml", :defaults => { :format => 'xml' }
+  get '/course/config_xml' => "lti_courses#config_xml", :defaults => { :format => 'xml' }
   
   # Routes for activity 5
-  post '/return_types' => "lti_courses#return_types"
+  post '/course/return_types' => "lti_courses#return_types"
+  post '/course/send_link_back' => "lti_courses#send_link_back"
+  
+  # Routes for activity 6
+  post '/course/send_grade' => "lti_courses#send_grade"
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

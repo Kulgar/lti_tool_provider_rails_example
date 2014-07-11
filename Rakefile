@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-LtiToolConsumerRailsExample::Application.load_tasks
+LtiToolProviderRailsExample::Application.load_tasks

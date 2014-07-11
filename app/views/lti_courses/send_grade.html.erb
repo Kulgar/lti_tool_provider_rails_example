@@ -1,0 +1,17 @@
+<% if @cant_grade %>
+	Grade could not be sent
+	<h3>Here is the provider details: </h3>
+	<%= debug @provider %>
+<% else %>
+	<% if @response.success? %>
+		Grade sent
+	<% elsif @response.processing? %>
+		Grade is sending...
+	<% elsif @response.unsupported? %>
+		Grading is not supported
+	<% else %>
+		Grading failed
+	<% end %>
+	<h3>Here is the response details:</h3>
+	<%= debug @response %>
+<% end %>

@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-LtiToolConsumerRailsExample::Application.config.secret_key_base = '99ab96012572f2a5feb4c2c6c96da9e00d94e4c33c303da90bc7fdada314596e397ad1d49e0e987797878d5966c22bf73eee0ed97d08c4d564a29292f2961c1f'
+LtiToolProviderRailsExample::Application.config.secret_key_base = '99ab96012572f2a5feb4c2c6c96da9e00d94e4c33c303da90bc7fdada314596e397ad1d49e0e987797878d5966c22bf73eee0ed97d08c4d564a29292f2961c1f'

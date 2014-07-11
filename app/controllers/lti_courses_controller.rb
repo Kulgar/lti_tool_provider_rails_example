@@ -1,13 +1,16 @@
 # Used to follow online course: https://canvas.instructure.com/courses/785215
+require 'net/http'
+require 'net/https'
 class LtiCoursesController < ApplicationController
   
   # Given during the course exercices
-  OAUTH_CONSUMER_SECRET = "3dec8e8fa15977346ff98ea1a1e48d9d"
+  OAUTH_CONSUMER_SECRET = "2a43c95d793bf0b87ca58e27aceb6c45"
   
   skip_before_filter  :verify_authenticity_token
   
   #== LTI activity 1 tasks
   # Home could be used for LTI activity 1 module
+  # Can also be used for LTI activity 6, section 1
   def home
     
   end
@@ -89,4 +92,78 @@ class LtiCoursesController < ApplicationController
       @allowed_types = ["none"]
     end
   end
+  
+  #=== Section 2 to 7
+  def send_link_back
+    uri = URI(params[:launch_presentation_return_url].to_s)
+    uri.query ||= ""
+    
+    case params[:section]
+    when "3"
+      new_params = [["embed_type", "image"], ["url", "http://www.bacon.com/bacon.png"], ["alt", "bacon"], ["width", "200"], ["height", "100"]]
+    when "4"
+      new_params = [["embed_type", "iframe"], ["url", "http://www.bacon.com"], ["width", "200"], ["height", "100"]]
+    when "5"
+      new_params = [["embed_type", "file"], ["url", "http://www.bacon.com/bacon.docx"], ["text", "bacon.docx"], ["content_type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]]
+    when "6"
+      new_params = [["embed_type", "basic_lti"], ["url", "http://www.bacon.com/bacon_launch"]]
+    when "7"
+      new_params = [["embed_type", "oembed"], ["url", "http://www.flickr.com/photos/bees/2341623661/"], ["endpoint", "http://www.flickr.com/services/oembed/"]]
+    else
+      new_params = [["embed_type", "link"], ["url", "http://www.bacon.com"], ["text", "bacon"]]
+    end
+    
+    new_query_ar = URI.decode_www_form(uri.query)
+    new_params.each do |new_param|
+       new_query_ar << new_param
+    end
+    uri.query = URI.encode_www_form(new_query_ar)
+    redirect_to uri.to_s
+  end
+  
+  #== LTI Activity 6
+  #=== Section 2
+  #- We are using a library here to ease the grading functionnality
+  def send_grade
+    consumer_key = params[:oauth_consumer_key].to_s
+    consumer_secret = OAUTH_CONSUMER_SECRET
+    @provider = IMS::LTI::ToolProvider.new(consumer_key, consumer_secret, params)
+    @cant_grade = false
+    if @provider.valid_request?(request)
+      grade = case params[:section]
+      when "3"
+        1.0
+      when "4"
+        0.43
+      else
+        0.9
+      end
+      @response = @provider.post_replace_result!(grade)
+    else
+      @cant_grade = true
+    end
+  end
+  
+  private
+  
+    def content_type_allowed?(content_type)
+      if !params[:ext_content_return_types].blank?
+        @allowed_types = params[:ext_content_return_types].split(",")
+      elsif !params[:selection_directive].blank?
+        case params[:selection_directive]
+        when "embed_content"
+          @allowed_types = "image,iframe,link,basic_lti,oembed".split(",")
+        when "select_link"
+          @allowed_types = ["basic_lti"]
+        when "submit_homework"
+          @allowed_types = "link,file".split(",")
+        else
+          @allowed_types = ["none"]
+        end
+      else
+        @allowed_types = ["none"]
+      end
+      @allowed_types.include?(content_type.to_s)
+    end
+  
 end
